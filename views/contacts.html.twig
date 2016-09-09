@@ -1,40 +1,45 @@
 <html>
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
     <title>Address Book</title>
 </head>
 <body>
-    <h1>Contacts:</h1>
-    {% if contacts is not empty %}
-        <p>Here are all your contacts:</p>
-        <ul>
-          {% for contact in contacts %}
-            <li>{{ contact.getName }}</li>
-            <li>{{ contact.getPhone }}</li>
-            <li>{{ contact.getAddress }}</li>
-            <br />
-            <br />
-          {% endfor %}
-        </ul>
-    {% endif %}
+    <div class='container'>
+        <h1>Address Book</h1>
+        {% if contacts is not empty %}
+            <h2>Here are all your Contacts:</h2>
+            <ul>
+              {% for contact in contacts %}
+                <li>{{ contact.getName }}</li>
+                <li>{{ contact.getPhone }}</li>
+                <li>{{ contact.getAddress }}</li>
+                <br />
+                <br />
+              {% endfor %}
+            </ul>
+        {% endif %}
 
-    <h2>Please Enter A new Contact!</h2>
-    <form action='/contacts' method='post'>
-        <label for='name'>Name: </label>
-        <input id='name' name='name' type='text'>
+        <h3>You May Enter A new Contact Here:</h3>
         <br />
-        <br />
-        <label for='phone'>Phone: </label>
-        <input id='phone' name='phone' type='number'>
-        <br />
-        <br />
-        <label for='address'>Address: </label>
-        <input id='address' name='address' type='text'>
-        <br />
-        <br />
-        <button type='submit'>Add Contact</button>
-    </form>
-    <form action='/delete_contacts' method='post'>
-        <button type='submit'>Clear All Contacts</button>
-    </form>
+        <form action='/contacts' method='post'>
+            <label for='name'>Name: </label>
+            <input id='name' name='name' type='text'>
+            <br />
+            <br />
+            <label for='phone'>Phone: </label>
+            <input id='phone' name='phone' type='number'>
+            <br />
+            <br />
+            <label for='address'>Address: </label>
+            <input id='address' name='address' type='text'>
+            <br />
+            <br />
+            <button type='submit' class='btn-success'>Add Contact</button>
+        </form>
+        <form action='/delete_contacts' method='post'>
+            <button class='btn-danger' type='submit'>Clear All Contacts</button>
+        </form>
+    </div>
 </body>
 </html>
