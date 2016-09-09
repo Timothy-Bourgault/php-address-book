@@ -11,78 +11,24 @@
 
     $app = new Silex\Application();
 
-    // $app->register(new Silex\Provider\TwigServiceProvider(), array(
-    //     'twig.path' => __DIR__.'/../views'
-    // ));
+    $app->register(new Silex\Provider\TwigServiceProvider(), array(
+        'twig.path' => __DIR__.'/../views'
+    ));
 
-    $app->get("/", function() {
+    $app->get("/", function() use ($app) {
 
-        $output = "";
-
-        $all_contacts = Contact::getAll();
-
-        if (!empty($all_contacts)) {
-            $output .= "
-                <h1>Contact Book</h1>
-                <p>Here are all your Contacts:</p>
-                ";
-
-            foreach ($all_contacts as $contact) {
-                $output .= "<ul><li>" . $contact->getName() . "</li>
-                <li>" . $contact->getPhone() . "</li>
-                <li>" . $contact->getAddress() . "</li></ul>";
-
-            }
-        }
-
-        $output .= "
-            <h2>Please Enter A new Contact!</h2>
-            <form action='/contacts' method='post'>
-                <label for='name'>Name: </label>
-                <input id='name' name='name' type='text'>
-                <br />
-                <br />
-                <label for='phone'>Phone: </label>
-                <input id='phone' name='phone' type='number'>
-                <br />
-                <br />
-                <label for='address'>Address: </label>
-                <input id='address' name='address' type='text'>
-                <br />
-                <br />
-                <button type='submit'>Add Contact</button>
-            </form>
-        ";
-
-        $output .= "
-            <form action='/delete_contacts' method='post'>
-                <button type='submit'>Clear Contact Book</button>
-            </form>
-        ";
-
-        return $output;
+        return $app['twig']->render('contacts.html.twig', array('contacts' => Contact::getAll()));
     });
 
-    $app->post("/contacts", function() {
+    $app->post("/contacts", function() use ($app) {
         $contact = new Contact($_POST['name'], $_POST['phone'], $_POST['address']);
         $contact->save();
-        return "
-            <h1>You have added a contacts to your contact book!</h1>
-            <p>" . $contact->getName() . "</p>
-            <p>" . $contact->getPhone() . "</p>
-            <p>" . $contact->getAddress() . "</p>
-            <p><a href='/'>View your Contact Book!</a></p>
-        ";
+        return $app['twig']->render('create_contact.html.twig', array('newcontact' => $contact));
     });
 
-    $app->post("/delete_contacts", function() {
-
+    $app->post("/delete_contacts", function() use ($app) {
         Contact::deleteAll();
-
-        return "
-            <h1>Contact Book Cleared!</h1>
-            <p><a href='/'>Start New Contact Book</a></p>
-        ";
+        return $app['twig']->render('delete_contacts.html.twig');
     });
 
     return $app;
