@@ -1,3 +1,35 @@
+body {
+  background-color: #392042;
+}
+
 .container {
   text-align: center;
+  color: white;
+  margin-top: 12em;
+}
+
+.inputForm {
+  color: black;
+}
+
+.center {
+  width: 200px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+h1 {
+  font-family: 'Berkshire Swash', cursive;
+}
+
+h2, h3 {
+  font-family: 'Schoolbell', cursive;
+}
+
+label {
+  font-family: 'Leckerli One', cursive;
+}
+
+p, li {
+  font-family: 'Walter Turncoat', cursive;
 }

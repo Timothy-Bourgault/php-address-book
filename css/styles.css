@@ -4,4 +4,9 @@ body {
 
 .container {
   text-align: center;
+  margin-top: 6em;
+}
+
+.form {
+  foncolor: black;
 }
