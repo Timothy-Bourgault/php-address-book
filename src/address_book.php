@@ -6,16 +6,14 @@ class Contact
     private $name;
     private $phone;
     private $address;
-    private $photo;
 
 //Constructor
 
-    function __construct($name, $phone, $address, $photo)
+    function __construct($name, $phone, $address)
     {
         $this->name = $name;
         $this->phone = $phone;
         $this->address = $address;
-        $this->photo = $photo;
     }
 
 
@@ -23,8 +21,9 @@ class Contact
 
     function setName($new_name)
     {
-        $this->name = (string) $new_name
+        $this->name = (string) $new_name;
     }
+
     function getName()
     {
         return $this->name;
@@ -33,8 +32,9 @@ class Contact
 
     function setPhone($new_phone)
     {
-        $this->phone = (string) $new_phone;
+        $this->phone = (integer) $new_phone;
     }
+
     function getPhone()
     {
         return $this->phone;
@@ -45,19 +45,12 @@ class Contact
     {
         $this->address = (string) $new_address;
     }
+
     function getAddress()
     {
         return $this->address;
     }
 
-    function setPhoto($new_photo)
-    {
-        $this->photo = (string) $new_photo;
-    }
-    function getPhoto()
-    {
-        return $this->photo;
-    }
 
 //General Methods
 

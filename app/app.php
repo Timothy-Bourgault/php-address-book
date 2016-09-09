@@ -1,67 +1,87 @@
 <?php
+    date_default_timezone_set('America/Los_Angeles');
     require_once __DIR__."/../vendor/autoload.php";
-    require_once __DIR__."/../src/cd_organizer.php";
+    require_once __DIR__."/../src/address_book.php";
 
     session_start();
 
-    if (empty($_SESSION['list_of_cds'])) {
-        $_SESSION['list_of_cds'] = array();
+    if (empty($_SESSION['list_of_contacts'])) {
+        $_SESSION['list_of_contacts'] = array();
     }
 
     $app = new Silex\Application();
+
+    // $app->register(new Silex\Provider\TwigServiceProvider(), array(
+    //     'twig.path' => __DIR__.'/../views'
+    // ));
 
     $app->get("/", function() {
 
         $output = "";
 
-        $all_cds = CD::getAll();
+        $all_contacts = Contact::getAll();
 
-        if (!empty($all_cds)) {
+        if (!empty($all_contacts)) {
             $output .= "
-                <h1>CD Organizer</h1>
-                <p>Here are all your CD's:</p>
+                <h1>Contact Book</h1>
+                <p>Here are all your Contacts:</p>
                 ";
 
-            foreach ($all_cds as $cd) {
-                $output .= "<p>" . $cd->getArtist() . "</p>";
+            foreach ($all_contacts as $contact) {
+                $output .= "<ul><li>" . $contact->getName() . "</li>
+                <li>" . $contact->getPhone() . "</li>
+                <li>" . $contact->getAddress() . "</li></ul>";
+
             }
         }
 
         $output .= "
-            <form action='/cds' method='post'>
-                <label for='artist'>Artist: </label>
-                <input id='artist' name='artist' type='text'>
-
-                <button type='submit'>Add Artist</button>
+            <h2>Please Enter A new Contact!</h2>
+            <form action='/contacts' method='post'>
+                <label for='name'>Name: </label>
+                <input id='name' name='name' type='text'>
+                <br />
+                <br />
+                <label for='phone'>Phone: </label>
+                <input id='phone' name='phone' type='number'>
+                <br />
+                <br />
+                <label for='address'>Address: </label>
+                <input id='address' name='address' type='text'>
+                <br />
+                <br />
+                <button type='submit'>Add Contact</button>
             </form>
         ";
 
         $output .= "
-            <form action='/delete_cds' method='post'>
-                <button type='submit'>Clear Organizer</button>
+            <form action='/delete_contacts' method='post'>
+                <button type='submit'>Clear Contact Book</button>
             </form>
         ";
 
         return $output;
     });
 
-    $app->post("/cds", function() {
-        $cd = new CD($_POST['artist']);
-        $cd->save();
+    $app->post("/contacts", function() {
+        $contact = new Contact($_POST['name'], $_POST['phone'], $_POST['address']);
+        $contact->save();
         return "
-            <h1>You have added a CD to your organizer!</h1>
-            <p>" . $cd->getArtist() . "</p>
-            <p><a href='/'>View your list of CDs!</a></p>
+            <h1>You have added a contacts to your contact book!</h1>
+            <p>" . $contact->getName() . "</p>
+            <p>" . $contact->getPhone() . "</p>
+            <p>" . $contact->getAddress() . "</p>
+            <p><a href='/'>View your Contact Book!</a></p>
         ";
     });
 
-    $app->post("/delete_cds", function() {
+    $app->post("/delete_contacts", function() {
 
-        CD::deleteAll();
+        Contact::deleteAll();
 
         return "
-            <h1>Organizer Cleared!</h1>
-            <p><a href='/'>Home</a></p>
+            <h1>Contact Book Cleared!</h1>
+            <p><a href='/'>Start New Contact Book</a></p>
         ";
     });
 
